@@ -9,7 +9,7 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // cmd_response protocol preparation
-#define SOFTWARE_VERSION       "2015-12-03"
+#define SOFTWARE_VERSION       "2015.1207.0"
 #define SOFTWARE_ID            "DCMotorServer"
 
 #define USB_BAUD                115200
@@ -156,6 +156,10 @@ void blink_LED() {
   digitalWrite(LED_PIN, led_state);
 }
 
+void motion_handler() {
+  // TODO: handle various phases of the motion protocol
+}
+
 
 void setup() {
   pinMode(LED_PIN, OUTPUT);
@@ -178,12 +182,9 @@ void setup() {
 
 
 void loop() {
-  //dc_vmove(dc_motor[i], randy);
   blink_LED();
-  // cmd_response protocol
-  signalGathering();
-  readBuffer();
-  processCmd();
+  cmd_response();   // TODO: do not allow certain changes while moving
+  motion_handler();
 }
 
 
@@ -191,6 +192,13 @@ void loop() {
 
 
 // cmd_response protocol
+
+
+void cmd_response() {
+  signalGathering();
+  readBuffer();
+  processCmd();
+}
 
 void signalGathering() {
   // periodically, average the watched ADC channels
