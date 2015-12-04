@@ -147,6 +147,33 @@ void dc_vmove(AF_DCMotor m, int time_ms) {
   dcmotor_moving = false;
 }
 
+void start_move() {
+  // initialize and start the move (called from cmd_response handler)
+}
+
+void end_move() {
+  // m.run(RELEASE);
+  permit_move = true;   // re-enable
+  dcmotor_moving = false;
+}
+
+void motion_handler() {
+  // TODO: handle various phases of the motion protocol
+  if (!permit_move) {
+    end_move();
+  }
+  if (dcmotor_moving) {
+    // operate the move, terminate if appropriate
+    /*
+     * t = millis();
+     * if (t0 <= t && t < t1) ramp speed up
+     * if (t1 <= t && t < t2) hold speed at V_top
+     * if (t2 <= t && t < t3) ramp speed down
+     * if (t23 <= t) {end_move(); and then clear the move variables}
+     */
+  }
+}
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -154,10 +181,6 @@ void dc_vmove(AF_DCMotor m, int time_ms) {
 void blink_LED() {
   int led_state = millis()/500 % 2;
   digitalWrite(LED_PIN, led_state);
-}
-
-void motion_handler() {
-  // TODO: handle various phases of the motion protocol
 }
 
 
@@ -192,6 +215,7 @@ void loop() {
 
 
 // cmd_response protocol
+// https://github.com/prjemian/cmd_response
 
 
 void cmd_response() {
@@ -345,7 +369,6 @@ void dissectCommand(char *source_string) {
   }
 }
 
-
 void finalizeError(char *in) {
   Serial.println(in);
   resetBuffer();
@@ -385,8 +408,13 @@ void writeBO(char* in) {
 
 //  USB command: !dcm motor_number time_ms
 void move_DC_motor(char* in) {
-  if (0 < arg1 && arg1 <= NUM_MOTORS)
-    dc_vmove(dc_motor[arg1], arg2);
+  if (dcmotor_moving) {
+    Serial.print(F("ERROR_CANNOT_MOVE_NOW:"));
+    finalizeError(in);
+  } else {
+    if (0 < arg1 && arg1 <= NUM_MOTORS)
+      dc_vmove(dc_motor[arg1], arg2);
+  }
 }
 
 //  USB command: !dcm:stop
@@ -394,9 +422,6 @@ void move_DC_motor(char* in) {
 // stops any DC motor motion
 void stop_DC_motor(char* in) {
   permit_move = false;
-  while (dcmotor_moving)
-    delay(v_step_ms);
-  permit_move = true;   // re-enable
 }
 
 //  USB command: ?dcm:moving
@@ -407,7 +432,12 @@ void is_DC_motor_moving(char* in) {
 
 //  USB command: !dcm:v:top
 void set_DC_vtop(char* in) {
-  v_top = constrain(arg1, 0, V_TOP_MAX);
+  if (dcmotor_moving) {
+    Serial.print(F("ERROR_CANNOT_CHANGE_NOW:"));
+    finalizeError(in);
+  } else {
+    v_top = constrain(arg1, 0, V_TOP_MAX);
+  }
 }
 
 void get_DC_vtop(char* in) {
@@ -416,7 +446,12 @@ void get_DC_vtop(char* in) {
 
 //  USB command: !dcm:v:base
 void set_DC_vbase(char* in) {
-  v_base = constrain(arg1, 0, V_TOP_MAX);
+  if (dcmotor_moving) {
+    Serial.print(F("ERROR_CANNOT_CHANGE_NOW:"));
+    finalizeError(in);
+  } else {
+    v_base = constrain(arg1, 0, V_TOP_MAX);
+  }
 }
 
 void get_DC_vbase(char* in) {
@@ -425,7 +460,12 @@ void get_DC_vbase(char* in) {
 
 //  USB command: !dcm:t:ramp
 void set_DC_ramp_time(char* in) {
-  ramp_time_ms = arg1;
+  if (dcmotor_moving) {
+    Serial.print(F("ERROR_CANNOT_CHANGE_NOW:"));
+    finalizeError(in);
+  } else {
+    ramp_time_ms = arg1;
+  }
 }
 
 void get_DC_ramp_time(char* in) {
@@ -434,7 +474,12 @@ void get_DC_ramp_time(char* in) {
 
 //  USB command: !dcm:t:step
 void set_DC_step_time(char* in) {
-  v_step_ms = arg1;
+  if (dcmotor_moving) {
+    Serial.print(F("ERROR_CANNOT_CHANGE_NOW:"));
+    finalizeError(in);
+  } else {
+    v_step_ms = arg1;
+  }
 }
 
 void get_DC_step_time(char* in) {
