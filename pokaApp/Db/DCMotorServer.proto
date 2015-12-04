@@ -1,0 +1,108 @@
+# DCMotorServer:
+#   DC motor control via USB to Arduino Motor Shield
+# make this setting in st.cmd
+#   epicsEnvSet ("STREAM_PROTOCOL_PATH", ".:$(TOP)/pokaApp/Db")
+
+InTerminator = CR LF;
+OutTerminator = LF;
+#ReplyTimeout = 10;
+#LockTimeout = 500;
+
+# silence most error messages
+ERROR_RESPONSE = "ERROR_.*";
+@mismatch { in $ERROR_RESPONSE; }
+ExtraInput = Ignore;
+
+#     turn on diagnostics with these IOC shell commands:
+#       asynSetTraceIOMask "usb0" 0 2
+#       asynSetTraceMask   "usb0" 0 9
+
+# ai
+ai {
+    out "?ai \$1\n"; 
+    in "%d";
+    
+}
+
+# longout
+ai_mean {
+  out "?ai:mean \$1"; 
+  in "%d";
+
+  # configure the digital pin for ADC signal averaging
+  @init{ 
+     out "!ai:watch \$1 1";
+     in "Ok";
+  }
+}
+
+# bi
+bi {
+  out "?bi \$1\n"; 
+  in "%d";
+
+  # configure the digital pin for digital input
+  @init{
+    out "!pin \$1 0";
+    in "Ok";
+  }
+}
+
+# bo
+bo {
+  out "!bo \$1 %d";
+  in "Ok";
+
+  # configure the digital pin for PWM/digital output
+  @init{
+    out "!pin \$1 1";
+    in "Ok";
+  }
+}
+
+# longout
+dcm_move {
+  out "!dcm \$1 %d"; 
+}
+
+# longout
+pwm {
+  out "!pwm \$1 %d";
+  in "Ok";
+
+  # configure the digital pin for PWM/digital output
+  @init{
+    out "!pin \$1 1";
+    in "Ok";
+  }
+}
+
+# ao
+period {
+  out "!t %d";
+  in "Ok";
+}
+
+# ai
+rate {
+  out "?rate"; 
+  in "%d";
+}
+
+debug {
+    ExtraInput = Error;
+    out "%s";
+    in "%39c";
+}
+
+# stringin
+id {
+  out "?id\n"; 
+  in "%39c";
+}
+
+# stringin
+version {
+  out "?v\n"; 
+  in "%39c";
+}

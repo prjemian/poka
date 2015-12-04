@@ -1,0 +1,367 @@
+# autosave R5.3	Automatically generated - DO NOT MODIFY - 151203-183610
+poka:scan1Menu:currName defaultConfig
+poka:scan1Menu:currDesc 
+poka:scan2.ATIME 0
+poka:scan2.COPYTO 0
+poka:scan2.FLNK 0
+poka:scan2.NPTS 10
+poka:scan2.ACQT 0
+poka:scan2.ACQM 0
+poka:scan2.PASM 0
+poka:scan2.BSPV 
+poka:scan2.BSCD 1
+poka:scan2.BSWAIT 0
+poka:scan2.ASPV 
+poka:scan2.ASCD 1
+poka:scan2.ASWAIT 0
+poka:scan2.T1PV poka:scan1.EXSC
+poka:scan2.T1CD 1
+poka:scan2.T2PV 
+poka:scan2.T2CD 1
+poka:scan2.T3PV 
+poka:scan2.T3CD 1
+poka:scan2.T4PV 
+poka:scan2.T4CD 1
+poka:scan2.P1PV 
+poka:scan2.R1PV 
+poka:scan2.P1SM 0
+poka:scan2.P1SP 0
+poka:scan2.P1EP 0
+poka:scan2.P1AR 0
+poka:scan2.P2PV 
+poka:scan2.R2PV 
+poka:scan2.P2SM 0
+poka:scan2.P2SP 0
+poka:scan2.P2EP 0
+poka:scan2.P2AR 0
+poka:scan2.P3PV 
+poka:scan2.R3PV 
+poka:scan2.P3SM 0
+poka:scan2.P3SP 0
+poka:scan2.P3EP 0
+poka:scan2.P3AR 0
+poka:scan2.P4PV 
+poka:scan2.R4PV 
+poka:scan2.P4SM 0
+poka:scan2.P4SP 0
+poka:scan2.P4EP 0
+poka:scan2.P4AR 0
+poka:scan2.PDLY 0
+poka:scan2.DDLY 0
+poka:scan2.REFD 1
+poka:scan2.AWCT 0
+poka:scan2.A1PV 
+poka:scan2.A1CD 1
+poka:scan2.D01PV 
+poka:scan2.D02PV 
+poka:scan2.D03PV 
+poka:scan2.D04PV 
+poka:scan2.D05PV 
+poka:scan2.D06PV 
+poka:scan2.D07PV 
+poka:scan2.D08PV 
+poka:scan2.D09PV 
+poka:scan2.D10PV 
+poka:scan2.D11PV 
+poka:scan2.D12PV 
+poka:scan2.D13PV 
+poka:scan2.D14PV 
+poka:scan2.D15PV 
+poka:scan2.D16PV 
+poka:scan2.D17PV 
+poka:scan2.D18PV 
+poka:scan2.D19PV 
+poka:scan2.D20PV 
+poka:scan2.D21PV 
+poka:scan2.D22PV 
+poka:scan2.D23PV 
+poka:scan2.D24PV 
+poka:scan2.D25PV 
+poka:scan2.D26PV 
+poka:scan2.D27PV 
+poka:scan2.D28PV 
+poka:scan2.D29PV 
+poka:scan2.D30PV 
+poka:scan2.D31PV 
+poka:scan2.D32PV 
+poka:scan2.D33PV 
+poka:scan2.D34PV 
+poka:scan2.D35PV 
+poka:scan2.D36PV 
+poka:scan2.D37PV 
+poka:scan2.D38PV 
+poka:scan2.D39PV 
+poka:scan2.D40PV 
+poka:scan2.D41PV 
+poka:scan2.D42PV 
+poka:scan2.D43PV 
+poka:scan2.D44PV 
+poka:scan2.D45PV 
+poka:scan2.D46PV 
+poka:scan2.D47PV 
+poka:scan2.D48PV 
+poka:scan2.D49PV 
+poka:scan2.D50PV 
+poka:scan2.D51PV 
+poka:scan2.D52PV 
+poka:scan2.D53PV 
+poka:scan2.D54PV 
+poka:scan2.D55PV 
+poka:scan2.D56PV 
+poka:scan2.D57PV 
+poka:scan2.D58PV 
+poka:scan2.D59PV 
+poka:scan2.D60PV 
+poka:scan2.D61PV 
+poka:scan2.D62PV 
+poka:scan2.D63PV 
+poka:scan2.D64PV 
+poka:scan2.D65PV 
+poka:scan2.D66PV 
+poka:scan2.D67PV 
+poka:scan2.D68PV 
+poka:scan2.D69PV 
+poka:scan2.D70PV 
+poka:scan1.ATIME 0
+poka:scan1.COPYTO 0
+poka:scan1.FLNK 0
+poka:scan1.NPTS 10
+poka:scan1.ACQT 0
+poka:scan1.ACQM 0
+poka:scan1.PASM 0
+poka:scan1.BSPV 
+poka:scan1.BSCD 1
+poka:scan1.BSWAIT 0
+poka:scan1.ASPV 
+poka:scan1.ASCD 1
+poka:scan1.ASWAIT 0
+poka:scan1.T1PV 
+poka:scan1.T1CD 1
+poka:scan1.T2PV 
+poka:scan1.T2CD 1
+poka:scan1.T3PV 
+poka:scan1.T3CD 1
+poka:scan1.T4PV 
+poka:scan1.T4CD 1
+poka:scan1.P1PV 
+poka:scan1.R1PV 
+poka:scan1.P1SM 0
+poka:scan1.P1SP 0
+poka:scan1.P1EP 0
+poka:scan1.P1AR 0
+poka:scan1.P2PV 
+poka:scan1.R2PV 
+poka:scan1.P2SM 0
+poka:scan1.P2SP 0
+poka:scan1.P2EP 0
+poka:scan1.P2AR 0
+poka:scan1.P3PV 
+poka:scan1.R3PV 
+poka:scan1.P3SM 0
+poka:scan1.P3SP 0
+poka:scan1.P3EP 0
+poka:scan1.P3AR 0
+poka:scan1.P4PV 
+poka:scan1.R4PV 
+poka:scan1.P4SM 0
+poka:scan1.P4SP 0
+poka:scan1.P4EP 0
+poka:scan1.P4AR 0
+poka:scan1.PDLY 0
+poka:scan1.DDLY 0
+poka:scan1.REFD 1
+poka:scan1.AWCT 0
+poka:scan1.A1PV 
+poka:scan1.A1CD 1
+poka:scan1.D01PV 
+poka:scan1.D02PV 
+poka:scan1.D03PV 
+poka:scan1.D04PV 
+poka:scan1.D05PV 
+poka:scan1.D06PV 
+poka:scan1.D07PV 
+poka:scan1.D08PV 
+poka:scan1.D09PV 
+poka:scan1.D10PV 
+poka:scan1.D11PV 
+poka:scan1.D12PV 
+poka:scan1.D13PV 
+poka:scan1.D14PV 
+poka:scan1.D15PV 
+poka:scan1.D16PV 
+poka:scan1.D17PV 
+poka:scan1.D18PV 
+poka:scan1.D19PV 
+poka:scan1.D20PV 
+poka:scan1.D21PV 
+poka:scan1.D22PV 
+poka:scan1.D23PV 
+poka:scan1.D24PV 
+poka:scan1.D25PV 
+poka:scan1.D26PV 
+poka:scan1.D27PV 
+poka:scan1.D28PV 
+poka:scan1.D29PV 
+poka:scan1.D30PV 
+poka:scan1.D31PV 
+poka:scan1.D32PV 
+poka:scan1.D33PV 
+poka:scan1.D34PV 
+poka:scan1.D35PV 
+poka:scan1.D36PV 
+poka:scan1.D37PV 
+poka:scan1.D38PV 
+poka:scan1.D39PV 
+poka:scan1.D40PV 
+poka:scan1.D41PV 
+poka:scan1.D42PV 
+poka:scan1.D43PV 
+poka:scan1.D44PV 
+poka:scan1.D45PV 
+poka:scan1.D46PV 
+poka:scan1.D47PV 
+poka:scan1.D48PV 
+poka:scan1.D49PV 
+poka:scan1.D50PV 
+poka:scan1.D51PV 
+poka:scan1.D52PV 
+poka:scan1.D53PV 
+poka:scan1.D54PV 
+poka:scan1.D55PV 
+poka:scan1.D56PV 
+poka:scan1.D57PV 
+poka:scan1.D58PV 
+poka:scan1.D59PV 
+poka:scan1.D60PV 
+poka:scan1.D61PV 
+poka:scan1.D62PV 
+poka:scan1.D63PV 
+poka:scan1.D64PV 
+poka:scan1.D65PV 
+poka:scan1.D66PV 
+poka:scan1.D67PV 
+poka:scan1.D68PV 
+poka:scan1.D69PV 
+poka:scan1.D70PV 
+poka:scanH.ATIME 0
+poka:scanH.COPYTO 0
+poka:scanH.FLNK 0
+poka:scanH.NPTS 10
+poka:scanH.ACQT 1
+poka:scanH.ACQM 0
+poka:scanH.PASM 0
+poka:scanH.BSPV 
+poka:scanH.BSCD 1
+poka:scanH.BSWAIT 0
+poka:scanH.ASPV 
+poka:scanH.ASCD 1
+poka:scanH.ASWAIT 0
+poka:scanH.T1PV 
+poka:scanH.T1CD 1
+poka:scanH.T2PV 
+poka:scanH.T2CD 1
+poka:scanH.T3PV 
+poka:scanH.T3CD 1
+poka:scanH.T4PV 
+poka:scanH.T4CD 1
+poka:scanH.P1PV 
+poka:scanH.R1PV 
+poka:scanH.P1SM 0
+poka:scanH.P1SP 0
+poka:scanH.P1EP 0
+poka:scanH.P1AR 0
+poka:scanH.P2PV 
+poka:scanH.R2PV 
+poka:scanH.P2SM 0
+poka:scanH.P2SP 0
+poka:scanH.P2EP 0
+poka:scanH.P2AR 0
+poka:scanH.P3PV 
+poka:scanH.R3PV 
+poka:scanH.P3SM 0
+poka:scanH.P3SP 0
+poka:scanH.P3EP 0
+poka:scanH.P3AR 0
+poka:scanH.P4PV 
+poka:scanH.R4PV 
+poka:scanH.P4SM 0
+poka:scanH.P4SP 0
+poka:scanH.P4EP 0
+poka:scanH.P4AR 0
+poka:scanH.PDLY 0
+poka:scanH.DDLY 0
+poka:scanH.REFD 1
+poka:scanH.AWCT 0
+poka:scanH.A1PV 
+poka:scanH.A1CD 1
+poka:scanH.D01PV 
+poka:scanH.D02PV 
+poka:scanH.D03PV 
+poka:scanH.D04PV 
+poka:scanH.D05PV 
+poka:scanH.D06PV 
+poka:scanH.D07PV 
+poka:scanH.D08PV 
+poka:scanH.D09PV 
+poka:scanH.D10PV 
+poka:scanH.D11PV 
+poka:scanH.D12PV 
+poka:scanH.D13PV 
+poka:scanH.D14PV 
+poka:scanH.D15PV 
+poka:scanH.D16PV 
+poka:scanH.D17PV 
+poka:scanH.D18PV 
+poka:scanH.D19PV 
+poka:scanH.D20PV 
+poka:scanH.D21PV 
+poka:scanH.D22PV 
+poka:scanH.D23PV 
+poka:scanH.D24PV 
+poka:scanH.D25PV 
+poka:scanH.D26PV 
+poka:scanH.D27PV 
+poka:scanH.D28PV 
+poka:scanH.D29PV 
+poka:scanH.D30PV 
+poka:scanH.D31PV 
+poka:scanH.D32PV 
+poka:scanH.D33PV 
+poka:scanH.D34PV 
+poka:scanH.D35PV 
+poka:scanH.D36PV 
+poka:scanH.D37PV 
+poka:scanH.D38PV 
+poka:scanH.D39PV 
+poka:scanH.D40PV 
+poka:scanH.D41PV 
+poka:scanH.D42PV 
+poka:scanH.D43PV 
+poka:scanH.D44PV 
+poka:scanH.D45PV 
+poka:scanH.D46PV 
+poka:scanH.D47PV 
+poka:scanH.D48PV 
+poka:scanH.D49PV 
+poka:scanH.D50PV 
+poka:scanH.D51PV 
+poka:scanH.D52PV 
+poka:scanH.D53PV 
+poka:scanH.D54PV 
+poka:scanH.D55PV 
+poka:scanH.D56PV 
+poka:scanH.D57PV 
+poka:scanH.D58PV 
+poka:scanH.D59PV 
+poka:scanH.D60PV 
+poka:scanH.D61PV 
+poka:scanH.D62PV 
+poka:scanH.D63PV 
+poka:scanH.D64PV 
+poka:scanH.D65PV 
+poka:scanH.D66PV 
+poka:scanH.D67PV 
+poka:scanH.D68PV 
+poka:scanH.D69PV 
+poka:scanH.D70PV 
+<END>
