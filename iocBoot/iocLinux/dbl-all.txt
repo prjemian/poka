@@ -91,6 +91,8 @@ poka:HR1_phi2DmovBI
 poka:HR1_phi2SimHlsBI
 poka:HR1_phi2SimLlsBI
 poka:alldone
+poka:dcm:moving
+poka:dcm:moving_poll
 poka:history1_StopScan
 poka:scanActive
 poka:caputRecorderCommand
@@ -609,6 +611,7 @@ poka:caputRecorderRefreshedPut
 poka:caputRecorderSelectFile
 poka:caputRecorderSetMacrosBusy
 poka:caputRecorderWaitCompletion
+poka:dcm:stop
 poka:m10_able
 poka:m11_able
 poka:m12_able
@@ -897,7 +900,6 @@ poka:caputRecorderMacroName
 poka:caputRecorderStartTime
 poka:caputRecorderUserMessage
 poka:dcm:cmd
-poka:dcm:hello
 poka:history1_PV1_DESC
 poka:history1_PV2_DESC
 poka:history1_PV3_DESC
@@ -1202,7 +1204,6 @@ poka:userTran7EnableCalc
 poka:userTran8EnableCalc
 poka:userTran9EnableCalc
 poka:async_pid_slow
-poka:dcm:epid
 poka:pid_slow
 poka:HR1_Moving
 poka:caputRecorderAbortMacro

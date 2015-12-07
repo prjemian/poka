@@ -60,6 +60,17 @@ bo {
   }
 }
 
+# bo
+stop {
+  out "!dcm:stop %d";
+}
+
+# bi
+moving {
+  out "?dcm:moving"; 
+  in "%d";
+}
+
 # longout
 dcm_move {
   out "!dcm \$1 %d"; 

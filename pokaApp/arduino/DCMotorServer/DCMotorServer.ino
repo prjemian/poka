@@ -56,10 +56,8 @@ int permit_move = true;  // flag to allow motion
 int v_top = V_TOP_MAX;   // maximum selected motor speed (absolute value)
 int v_base = 0;          // starting motor speed (absolute value)
 
-int v_step_ms = 5;       // stepping interval in vmove()
+int t_min_ms = 5;        // minimum motion time, ms
 int ramp_time_ms = 500;  // time to ramp velocity up to v_top
-#define V_STEP_MAX 45    // maximum allowed step for rotation rate (NOT USED)
-#define MAX_STEP 10      // maximum allowed steps to ramp up to v_top (NOT USED)
 
 // create instances for each motor
 #include <AFMotor.h>
@@ -72,6 +70,14 @@ AF_DCMotor m4(4, MOTOR34_1KHZ);
 #define NUM_MOTORS 4
 AF_DCMotor dc_motor[] = {0L, m1, m2, m3, m4};
 
+// global variables for the motor in motion
+unsigned long t_0;
+unsigned long t_1;
+unsigned long t_2;
+unsigned long t_3;
+double v_t_slope;
+uint8_t  motor_number;
+
 
 void setup_dc_motors() {
   // turn on motors
@@ -82,15 +88,13 @@ void setup_dc_motors() {
 }
 
 
-// FIXME: the STOP algorithm does not work!!!
-
 /**
- ** dc_vmove (velocity controlled ramp move of DC motor)
+ ** start_move (velocity controlled ramp move of DC motor)
  ** 
  ** @time_ms (int): total time for move, negative for reverse direction
  **
  ** Only move one motor at a time
- ** Will not move motor if abs(time_ms) < v_step_ms
+ ** Will not move motor if abs(time_ms) < t_min_ms
  ** 
  **     -----------------------------------
  ** vt |        +-------------+            |
@@ -103,74 +107,68 @@ void setup_dc_motors() {
  ** 0  +---+----+-------------+----+-------
  **        t0   t1            t2   t3
  **/
-void dc_vmove(AF_DCMotor m, int time_ms) {
-  long  t_steady_ms = abs(time_ms) - 2 * ramp_time_ms;
-  if (abs(time_ms) < v_step_ms) return;
-  unsigned long  t_ramp_ms = (t_steady_ms > 0) ? ramp_time_ms : abs(time_ms)/2;
-  unsigned long  t0 = millis();
-  unsigned long  t1 = t0 + t_ramp_ms;
-  unsigned long  t2 = t1 + ((t_steady_ms < 0) ? 0 : t_steady_ms);
-  unsigned long  t3 = t0 + abs(time_ms);
-  int n = t_ramp_ms / v_step_ms;
-  float v_step = float(v_top-v_base)/n;
-  float rate = v_base;
 
-  if (time_ms >= 0)
-    m.run(FORWARD);
-  else
-    m.run(BACKWARD);
+void start_move(uint8_t motor_num, int time_ms) {
+  long  t_steady_ms;
+  unsigned long  t_ramp_ms;
   
-  dcmotor_moving = true;
-  // ramp up
-  while (millis() < t1 && permit_move) {
-    m.setSpeed(rate);
-    delay(v_step_ms);
-    rate = constrain(rate + v_step, 0, v_top);
-  }
-
-  // flat top
-  while (millis() < t2 && permit_move) {
-    m.setSpeed(rate);
-    delay(v_step_ms);
-    rate = constrain(rate + v_step, 0, v_top);
-  }
-
-  // ramp down
-  while (millis() < t3 && permit_move) {
-    rate = constrain(rate - v_step, 0, v_top);
-    m.setSpeed(rate);
-    delay(v_step_ms);
-  }
-
-  // turn motor off
-  m.run(RELEASE);
-  dcmotor_moving = false;
-}
-
-void start_move() {
+  if (abs(time_ms) < t_min_ms) return;   // this move is too short!
+  motor_number = motor_num;
+  if (time_ms >= 0)
+    dc_motor[motor_number].run(FORWARD);
+  else
+    dc_motor[motor_number].run(BACKWARD);
+  
   // initialize and start the move (called from cmd_response handler)
+  t_steady_ms = abs(time_ms) - 2 * ramp_time_ms;
+  t_ramp_ms = (t_steady_ms > 0) ? ramp_time_ms : abs(time_ms)/2;
+  v_t_slope = double(v_top - v_base) / t_ramp_ms;
+
+  // operate the move based on absolute system clock times
+  t_0 = millis();
+  t_1 = t_0 + t_ramp_ms;
+  t_2 = t_1 + ((t_steady_ms < 0) ? 0 : t_steady_ms);
+  t_3 = t_0 + abs(time_ms);
+  
+  permit_move = true;   // enable
+  dcmotor_moving = true;
 }
+
 
 void end_move() {
-  // m.run(RELEASE);
+  dc_motor[motor_number].run(RELEASE);
   permit_move = true;   // re-enable
   dcmotor_moving = false;
+  t_0 = 0;
+  t_1 = t_0;
+  t_2 = t_0;
+  t_3 = t_0;
 }
 
+
+/**
+ ** handle various phases of the motion protocol
+ **/
 void motion_handler() {
-  // TODO: handle various phases of the motion protocol
+  unsigned long  t;
+  float rate;
+  
   if (!permit_move) {
-    end_move();
-  }
-  if (dcmotor_moving) {
-    // operate the move, terminate if appropriate
-    /*
-     * t = millis();
-     * if (t0 <= t && t < t1) ramp speed up
-     * if (t1 <= t && t < t2) hold speed at V_top
-     * if (t2 <= t && t < t3) ramp speed down
-     * if (t23 <= t) {end_move(); and then clear the move variables}
-     */
+    end_move();         // STOP received, act immediately
+  } else if (dcmotor_moving) {
+    // operate the move sequence
+    t = millis();
+    if (t_0 <= t && t < t_1) {
+      rate = v_base + v_t_slope*(t - t_0);    // ramp speed up
+      dc_motor[motor_number].setSpeed(rate);
+    } else if (t_1 <= t && t < t_2) {
+      dc_motor[motor_number].setSpeed(v_top); // hold speed at V_top
+    } else if (t_2 <= t && t < t_3) {
+      rate = v_base + v_t_slope*(t_3 - t);    // ramp speed down
+      dc_motor[motor_number].setSpeed(rate);
+    } else if (t_3 <= t) {
+      end_move();                             // and clear the move variables
+    }
   }
 }
 
@@ -206,7 +204,7 @@ void setup() {
 
 void loop() {
   blink_LED();
-  cmd_response();   // TODO: do not allow certain changes while moving
+  cmd_response();   // Tdo not allow certain changes while moving
   motion_handler();
 }
 
@@ -312,8 +310,8 @@ void executeCommand() {
     else if (0 == strcmp(baseCmd, "?dcm:v:base"))  get_DC_vbase(inputString);
     else if (0 == strcmp(baseCmd, "!dcm:t:ramp"))  set_DC_ramp_time(inputString);
     else if (0 == strcmp(baseCmd, "?dcm:t:ramp"))  get_DC_ramp_time(inputString);
-    else if (0 == strcmp(baseCmd, "!dcm:t:step"))  set_DC_step_time(inputString);
-    else if (0 == strcmp(baseCmd, "?dcm:t:step"))  get_DC_step_time(inputString);
+    else if (0 == strcmp(baseCmd, "!dcm:t:min"))   set_DC_min_time(inputString);
+    else if (0 == strcmp(baseCmd, "?dcm:t:min"))   get_DC_min_time(inputString);
     else if (0 == strcmp(baseCmd, "!pwm"))      writePWM(inputString);
     else if (0 == strcmp(baseCmd, "!pin"))      setPinMode(inputString);
     else if (0 == strcmp(baseCmd, "?#ai"))      get_num_ai_channels(inputString);
@@ -412,8 +410,11 @@ void move_DC_motor(char* in) {
     Serial.print(F("ERROR_CANNOT_MOVE_NOW:"));
     finalizeError(in);
   } else {
-    if (0 < arg1 && arg1 <= NUM_MOTORS)
-      dc_vmove(dc_motor[arg1], arg2);
+    if (0 < arg1 && arg1 <= NUM_MOTORS) {
+      Serial.println(F("move_DC_motor"));
+      start_move(arg1, arg2);
+      // dc_vmove(dc_motor[arg1], arg2);
+    }
   }
 }
 
@@ -422,6 +423,7 @@ void move_DC_motor(char* in) {
 // stops any DC motor motion
 void stop_DC_motor(char* in) {
   permit_move = false;
+  end_move();
 }
 
 //  USB command: ?dcm:moving
@@ -472,18 +474,18 @@ void get_DC_ramp_time(char* in) {
   Serial.println(ramp_time_ms);
 }
 
-//  USB command: !dcm:t:step
-void set_DC_step_time(char* in) {
+//  USB command: !dcm:t:min
+void set_DC_min_time(char* in) {
   if (dcmotor_moving) {
     Serial.print(F("ERROR_CANNOT_CHANGE_NOW:"));
     finalizeError(in);
   } else {
-    v_step_ms = arg1;
+    t_min_ms = abs(arg1);
   }
 }
 
-void get_DC_step_time(char* in) {
-  Serial.println(v_step_ms);
+void get_DC_min_time(char* in) {
+  Serial.println(t_min_ms);
 }
 
 void writePWM(char* in) {

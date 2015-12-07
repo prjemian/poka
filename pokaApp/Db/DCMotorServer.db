@@ -28,6 +28,28 @@ record(stringout, "$(P)cmd") {
     field(OUT,  "@DCMotorServer.proto debug $(PORT)")
 }
 
+record(bo, "$(P)stop") {
+    field(DESC, "STOP all motion")
+    field(DTYP, "stream")
+    field(OUT,  "@DCMotorServer.proto stop $(PORT)")
+    field(FLNK, "$(P)moving.PROC")
+}
+
+record(bi, "$(P)moving_poll") {
+    field(SCAN, ".1 second")
+    field(FLNK, "$(P)moving.PROC")
+}
+
+record(bi, "$(P)moving") {
+    field(DESC, "Is motor in motion?")
+    field(DTYP, "stream")
+    field(INP,  "@DCMotorServer.proto moving $(PORT)")
+    field(PINI, "1")
+    field(ZNAM, "NO")
+    field(ONAM, "YES")
+    #field(SCAN, "0.2 second")
+}
+
 record(ao, "$(P)m1") {
     field(DESC, "motor 1 timed move")
     field(EGU,  "s")
@@ -36,6 +58,7 @@ record(ao, "$(P)m1") {
     field(OUT,  "@DCMotorServer.proto dcm_move(1) $(PORT)")
     field(AOFF, "0")
     field(ASLO, "0.001")  # ms units
+    field(FLNK, "$(P)moving.PROC")
 }
 
 record(ao, "$(P)m2") {
@@ -46,6 +69,7 @@ record(ao, "$(P)m2") {
     field(OUT,  "@DCMotorServer.proto dcm_move(2) $(PORT)")
     field(AOFF, "0")
     field(ASLO, "0.001")  # ms units
+    field(FLNK, "$(P)moving.PROC")
 }
 
 record(ao, "$(P)m3") {
@@ -56,6 +80,7 @@ record(ao, "$(P)m3") {
     field(OUT,  "@DCMotorServer.proto dcm_move(3) $(PORT)")
     field(AOFF, "0")
     field(ASLO, "0.001")  # ms units
+    field(FLNK, "$(P)moving.PROC")
 }
 
 record(ao, "$(P)m4") {
@@ -66,6 +91,7 @@ record(ao, "$(P)m4") {
     field(OUT,  "@DCMotorServer.proto dcm_move(4) $(PORT)")
     field(AOFF, "0")
     field(ASLO, "0.001")  # ms units
+    field(FLNK, "$(P)moving.PROC")
 }
 
 record(ai, "$(P)ai0") {
@@ -210,35 +236,3 @@ record(ao, "$(P)period") {
     field(DRVH, "1000.000")
     field(DRVL, "0.005")
 }
-
-record(epid, "$(P)epid") {
-  field(DESC, "Feedback control")
-  field(DTYP, "Soft Channel")
-
-  field(SMSL, "supervisory")
-  # with SMSL=supervisory, setpoint is .VAL
-  field(INP, "$(P)ai0:mean")
-
-  # with SMSL=closed_loop, setpoint comes via .STPL
-  #field(SMSL, "closed_loop")
-  #field(STPL, "$(P)setpoint")
-  
-  field(OUTL, "$(P)pwm11 PP NMS")
-
-  field(FBON, "0")
-
-  field(KP, "0.1")
-  field(KI, "5")
-  field(KD, "0")
-  field(SCAN, ".5 second")
-
-  field(DRVL, "0")
-  field(DRVH, "5")
-  field(PREC, "4")
-}
-
-
-#  simple monitoring program:
-#  setenv P ino:
-#  export P=ino:
-#  pvview ${P}cr:{pwm11,ai{0,1,2}:mean,{rate,period},cmd}{.DESC,} &
