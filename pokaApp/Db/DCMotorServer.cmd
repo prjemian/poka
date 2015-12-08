@@ -28,7 +28,7 @@ epicsEnvSet("INO","$(PREFIX)dcm:")
 ############################################################################
 
 
-drvAsynSerialPortConfigure("usb0", "/dev/ttyUSB1", 0, 0, 0)
+drvAsynSerialPortConfigure("usb0", "/dev/ttyUSB0", 0, 0, 0)
 asynSetOption(usb0, 0, baud, 115200)
 asynOctetSetInputEos("usb0", 0, "\r\n")
 asynOctetSetOutputEos("usb0", 0, "\n")
