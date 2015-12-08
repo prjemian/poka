@@ -48,6 +48,20 @@ record(bi, "$(P)moving") {
     field(ZNAM, "NO")
     field(ONAM, "YES")
     #field(SCAN, "0.2 second")
+    field(FLNK, "$(P)motor_number.PROC")
+}
+
+record(mbbi, "$(P)motor_number") {
+    field(DESC, "this motor number is moving")
+    field(DTYP, "stream")
+    field(INP,  "@DCMotorServer.proto motor_number $(PORT)")
+    field(PINI, "1")
+    field(ZRST, "None")
+    field(ONST, "m1")
+    field(TWST, "m2")
+    field(THST, "m3")
+    field(FRST, "m4")
+    #field(SCAN, "0.2 second")
 }
 
 record(ao, "$(P)m1") {

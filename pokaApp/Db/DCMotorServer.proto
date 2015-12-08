@@ -71,6 +71,12 @@ moving {
   in "%d";
 }
 
+# mbbi
+motor_number {
+  out "?dcm:motor"; 
+  in "%d";
+}
+
 # longout
 dcm_move {
   out "!dcm \$1 %d"; 

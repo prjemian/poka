@@ -9,7 +9,7 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // cmd_response protocol preparation
-#define SOFTWARE_VERSION       "2015.1207.0"
+#define SOFTWARE_VERSION       "2015.1208.0"
 #define SOFTWARE_ID            "DCMotorServer"
 
 #define USB_BAUD                115200
@@ -76,7 +76,7 @@ unsigned long t_1;
 unsigned long t_2;
 unsigned long t_3;
 double v_t_slope;
-uint8_t  motor_number;
+uint8_t  motor_number = 0;
 
 
 void setup_dc_motors() {
@@ -108,7 +108,7 @@ void setup_dc_motors() {
  **        t0   t1            t2   t3
  **/
 
-void start_move(uint8_t motor_num, int time_ms) {
+void start_move(uint8_t motor_num, long time_ms) {
   long  t_steady_ms;
   unsigned long  t_ramp_ms;
   
@@ -143,6 +143,7 @@ void end_move() {
   t_1 = t_0;
   t_2 = t_0;
   t_3 = t_0;
+  motor_number = 0;
 }
 
 
@@ -304,6 +305,7 @@ void executeCommand() {
     else if (0 == strcmp(baseCmd, "!dcm"))      move_DC_motor(inputString);
     else if (0 == strcmp(baseCmd, "!dcm:stop")) stop_DC_motor(inputString);
     else if (0 == strcmp(baseCmd, "?dcm:moving"))  is_DC_motor_moving(inputString);
+    else if (0 == strcmp(baseCmd, "?dcm:motor"))   get_DC_motor_number(inputString);
     else if (0 == strcmp(baseCmd, "!dcm:v:top"))   set_DC_vtop(inputString);
     else if (0 == strcmp(baseCmd, "?dcm:v:top"))   get_DC_vtop(inputString);
     else if (0 == strcmp(baseCmd, "!dcm:v:base"))  set_DC_vbase(inputString);
@@ -351,11 +353,11 @@ void dissectCommand(char *source_string) {
   
   cmd = strtok(NULL, " ");
   if (cmd) {
-    arg1 = atoi(cmd);
+    arg1 = atol(cmd);
 
     cmd = strtok(NULL, " ");
     if (cmd) {
-      arg2 = atoi(cmd);
+      arg2 = atol(cmd);
       
       cmd = strtok(NULL, " ");
       if (cmd) {
@@ -430,6 +432,11 @@ void stop_DC_motor(char* in) {
 void is_DC_motor_moving(char* in) {
   int state = dcmotor_moving ? 1 : 0;
   Serial.println(state);
+}
+
+//  USB command: ?dcm:motor
+void get_DC_motor_number(char *in) {
+  Serial.println(motor_number);
 }
 
 //  USB command: !dcm:v:top
