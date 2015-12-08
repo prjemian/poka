@@ -1,3 +1,4 @@
+poka:dcm:motor_number
 poka:saveData_status
 poka:4step:det1TrigDOLDInfo
 poka:4step:det2TrigDOLDInfo
