@@ -64,6 +64,44 @@ record(mbbi, "$(P)motor_number") {
     #field(SCAN, "0.2 second")
 }
 
+record(ao, "$(P)ramp_time") {
+    field(DESC, "acceleration time")
+    field(EGU,  "s")
+    field(PREC, "3")
+    field(DTYP, "stream")
+    field(OUT,  "@DCMotorServer.proto ramp_time $(PORT)")
+    field(AOFF, "0")
+    field(ASLO, "0.001")  # ms units
+}
+
+record(ao, "$(P)v_top") {
+    field(DESC, "top speed")
+    field(EGU,  "VDC")
+    field(PREC, "3")
+    field(DTYP, "stream")
+    field(OUT,  "@DCMotorServer.proto v_top $(PORT)")
+    field(AOFF, "0")
+    field(ASLO, "0.047058823529411764")  # 12 VDC per 255 ADC values (12/255)
+    field(HOPR, "12.0")   # 12 VDC full scale
+    field(LOPR, "0.0")    # 0 VDC minimum
+    field(VAL,  "12.0")   # default starting value
+}
+
+record(ao, "$(P)v_base") {
+    field(DESC, "starting (base) speed")
+    field(EGU,  "VDC")
+    field(PREC, "3")
+    field(DTYP, "stream")
+    field(OUT,  "@DCMotorServer.proto v_base $(PORT)")
+    field(AOFF, "0")
+    field(ASLO, "0.047058823529411764")  # 12 VDC per 255 ADC values (12/255)
+    field(HOPR, "12.0")   # 12 VDC full scale
+    field(LOPR, "0.0")    # 0 VDC minimum
+    field(VAL,  "0.0")    # default starting value
+}
+
+# TODO: use a template .db for this!
+
 record(ao, "$(P)m1") {
     field(DESC, "motor 1 timed move")
     field(EGU,  "s")
@@ -73,6 +111,33 @@ record(ao, "$(P)m1") {
     field(AOFF, "0")
     field(ASLO, "0.001")  # ms units
     field(FLNK, "$(P)moving.PROC")
+}
+
+record(ao, "$(P)m1:step:size") {
+    field(DESC, "motor 1 step size")
+    field(EGU,  "s")
+    field(PREC, "2")
+    field(VAL,  "1")
+}
+
+record(calcout, "$(P)m1:step:change") {
+  field(DESC, "change step size")
+  field(CALC, "min(max(abs(a)*b,c),d)")
+  # field(A,    MULTIPLIER)		# <-- write to this field: either 10 or 0.1
+  field(INPB, "$(P)m1:step:size")
+  field(C,    "0.01")			# minimum move time: 10 ms
+  field(D,    "300")			# maximum move time: 5 min
+  field(OUT, "$(P)m1:step:size")
+  field(FLNK, "$(P)m1:step:size")
+}
+
+record(calcout, "$(P)m1:step") {	# move motor positive or negative
+  field(DESC, "move m1 by step size")
+  field(CALC, "A>=0?B:-B")
+  # field(A,    MULTIPLIER)		# <-- write to this field: either positive, zero, or negative number
+  field(INPB, "$(P)m1:step:size")
+  field(OUT,  "$(P)m1")
+  field(FLNK, "$(P)m1")
 }
 
 record(ao, "$(P)m2") {
@@ -86,6 +151,33 @@ record(ao, "$(P)m2") {
     field(FLNK, "$(P)moving.PROC")
 }
 
+record(ao, "$(P)m2:step:size") {
+    field(DESC, "motor 2 step size")
+    field(EGU,  "s")
+    field(PREC, "2")
+    field(VAL,  "1")
+}
+
+record(calcout, "$(P)m2:step:change") {
+  field(DESC, "change step size")
+  field(CALC, "min(max(abs(a)*b,c),d)")
+  # field(A,    MULTIPLIER)		# <-- write to this field: either 10 or 0.1
+  field(INPB, "$(P)m2:step:size")
+  field(C,    "0.01")			# minimum move time: 10 ms
+  field(D,    "300")			# maximum move time: 5 min
+  field(OUT, "$(P)m2:step:size")
+  field(FLNK, "$(P)m2:step:size")
+}
+
+record(calcout, "$(P)m2:step") {	# move motor positive or negative
+  field(DESC, "move m2 by step size")
+  field(CALC, "A>=0?B:-B")
+  # field(A,    MULTIPLIER)		# <-- write to this field: either positive, zero, or negative number
+  field(INPB, "$(P)m2:step:size")
+  field(OUT,  "$(P)m2")
+  field(FLNK, "$(P)m2")
+}
+
 record(ao, "$(P)m3") {
     field(DESC, "motor 3 timed move")
     field(EGU,  "s")
@@ -97,6 +189,33 @@ record(ao, "$(P)m3") {
     field(FLNK, "$(P)moving.PROC")
 }
 
+record(ao, "$(P)m3:step:size") {
+    field(DESC, "motor 3 step size")
+    field(EGU,  "s")
+    field(PREC, "2")
+    field(VAL,  "1")
+}
+
+record(calcout, "$(P)m3:step:change") {
+  field(DESC, "change step size")
+  field(CALC, "min(max(abs(a)*b,c),d)")
+  # field(A,    MULTIPLIER)		# <-- write to this field: either 10 or 0.1
+  field(INPB, "$(P)m3:step:size")
+  field(C,    "0.01")			# minimum move time: 10 ms
+  field(D,    "300")			# maximum move time: 5 min
+  field(OUT, "$(P)m3:step:size")
+  field(FLNK, "$(P)m3:step:size")
+}
+
+record(calcout, "$(P)m3:step") {	# move motor positive or negative
+  field(DESC, "move m3 by step size")
+  field(CALC, "A>=0?B:-B")
+  # field(A,    MULTIPLIER)		# <-- write to this field: either positive, zero, or negative number
+  field(INPB, "$(P)m3:step:size")
+  field(OUT,  "$(P)m3")
+  field(FLNK, "$(P)m3")
+}
+
 record(ao, "$(P)m4") {
     field(DESC, "motor 4 timed move")
     field(EGU,  "s")
@@ -106,6 +225,33 @@ record(ao, "$(P)m4") {
     field(AOFF, "0")
     field(ASLO, "0.001")  # ms units
     field(FLNK, "$(P)moving.PROC")
+}
+
+record(ao, "$(P)m4:step:size") {
+    field(DESC, "motor 4 step size")
+    field(EGU,  "s")
+    field(PREC, "2")
+    field(VAL,  "1")
+}
+
+record(calcout, "$(P)m4:step:change") {
+  field(DESC, "change step size")
+  field(CALC, "min(max(abs(a)*b,c),d)")
+  # field(A,    MULTIPLIER)		# <-- write to this field: either 10 or 0.1
+  field(INPB, "$(P)m4:step:size")
+  field(C,    "0.01")			# minimum move time: 10 ms
+  field(D,    "300")			# maximum move time: 5 min
+  field(OUT, "$(P)m4:step:size")
+  field(FLNK, "$(P)m4:step:size")
+}
+
+record(calcout, "$(P)m4:step") {	# move motor positive or negative
+  field(DESC, "move m4 by step size")
+  field(CALC, "A>=0?B:-B")
+  # field(A,    MULTIPLIER)		# <-- write to this field: either positive, zero, or negative number
+  field(INPB, "$(P)m4:step:size")
+  field(OUT,  "$(P)m4")
+  field(FLNK, "$(P)m4")
 }
 
 record(ai, "$(P)ai0") {

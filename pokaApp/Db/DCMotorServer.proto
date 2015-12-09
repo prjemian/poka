@@ -82,6 +82,39 @@ dcm_move {
   out "!dcm \$1 %d"; 
 }
 
+# ao
+ramp_time {
+  out "!dcm:t:ramp %d";
+
+  # get initial value
+  @init{
+    out "?dcm:t:ramp";
+    in "%d";
+  }
+}
+
+# ao
+v_top {
+  out "!dcm:v:top %d";
+
+  # get initial value
+  @init{
+    out "?dcm:v:top";
+    in "%d";
+  }
+}
+
+# ao
+v_base {
+  out "!dcm:v:base %d";
+
+  # get initial value
+  @init{
+    out "?dcm:v:base";
+    in "%d";
+  }
+}
+
 # longout
 pwm {
   out "!pwm \$1 %d";
