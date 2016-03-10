@@ -84,6 +84,8 @@ record(ao, "$(P)v_top") {
     field(ASLO, "0.047058823529411764")  # 12 VDC per 255 ADC values (12/255)
     field(HOPR, "12.0")   # 12 VDC full scale
     field(LOPR, "0.0")    # 0 VDC minimum
+    field(DRVH, "12.0")   # 12 VDC full scale
+    field(DRVL, "0.0")    # 0 VDC minimum
     field(VAL,  "12.0")   # default starting value
 }
 
@@ -97,6 +99,8 @@ record(ao, "$(P)v_base") {
     field(ASLO, "0.047058823529411764")  # 12 VDC per 255 ADC values (12/255)
     field(HOPR, "12.0")   # 12 VDC full scale
     field(LOPR, "0.0")    # 0 VDC minimum
+    field(DRVH, "12.0")   # 12 VDC full scale
+    field(DRVL, "0.0")    # 0 VDC minimum
     field(VAL,  "0.0")    # default starting value
 }
 
